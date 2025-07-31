@@ -1,6 +1,8 @@
 package roomy.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*;
 import roomy.constants.RoomType;
 
 import java.time.LocalDate;
@@ -8,12 +10,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Room {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private String title;
     private String description;
@@ -26,8 +35,7 @@ public class Room {
 
     private LocalDate availableFrom;
 
-    @ElementCollection
-    private List<String> images; // List of URLs
+    private String images; // List of URLs
 
     private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -1,15 +1,28 @@
 package roomy.entities;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(name = "profile")
 public class Profile {
 
-    @Id @GeneratedValue private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
-    @OneToOne @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String fullName;
@@ -20,9 +33,6 @@ public class Profile {
     private String city;
     private String profilePicUrl;
 
-    @ElementCollection
-    private List<String> lifestyle;  // e.g. ["non-smoker", "early riser"]
-
-    @ElementCollection
-    private List<String> socialLinks;  // e.g. ["linkedin.com/in/john", "github.com/john"]
+    private String lifestyle;
+    private String socialLinks;
 }
